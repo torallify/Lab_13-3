@@ -19,6 +19,14 @@ namespace Lab_13_3.Controllers
         {
             dal = dalObject;
         }
+
+        [HttpGet("{id}")]
+        public OrderDetail GetSingleOrderDetail(int id)
+        {
+            OrderDetail OrderDet = dal.GetOrderDetailById(id);
+            return OrderDet; //serialize the parameter into JSON and return an Ok (20x)
+        }
+
         [HttpGet]
         public IEnumerable<OrderDetail> Get()
         {
@@ -38,5 +46,7 @@ namespace Lab_13_3.Controllers
             //    return Orders;
             //}
         }
+
+        
     }
 }

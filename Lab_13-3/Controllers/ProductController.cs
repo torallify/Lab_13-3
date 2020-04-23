@@ -19,6 +19,15 @@ namespace Lab_13_3.Controllers
         {
             dal = dalObject;
         }
+
+        [HttpGet("{id}")]
+        public Product GetSingleProduct(int id)
+        {
+            Product Prod = dal.GetProductById(id);
+            return Prod; //serialize the parameter into JSON and return an Ok (20x)
+
+        }
+
         [HttpGet]
         public IEnumerable<Product> Get()
         {
@@ -37,6 +46,32 @@ namespace Lab_13_3.Controllers
             //    IEnumerable<Order> Orders = dal.GetOrdersByCountry(country);
             //    return Orders;
             //}
+        }
+
+        [HttpPost]
+        public Object Post(Product p)
+        {
+            int newId = dal.CreateProduct(p);
+            if (newId < 0)
+            {
+                return new { success = false };
+            }
+
+            return new { status = true, id = newId };
+        }
+
+        [HttpDelete("{id}")]
+        public Object Delete(int id)
+        {
+            int result = dal.DeleteProductById(id);
+            if (result < 0)
+            {
+                return new { success = true };
+            }
+            else
+            {
+                return new { success = false };
+            }
         }
     }
 }

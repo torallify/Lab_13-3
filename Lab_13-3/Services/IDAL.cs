@@ -12,5 +12,12 @@ namespace Lab_13_3.Services
         public IEnumerable<Order> GetOrdersAll();
         public IEnumerable<OrderDetail> GetOrderDetailsAll();
         public IEnumerable<Order> GetOrdersByCountry(string country);
+
+        public OrderDetail GetOrderDetailById(int id);
+        public Product GetProductById(int id);
+
+        public int CreateProduct(Product p);
+
+        public int DeleteProductById(int id);
     }
 }

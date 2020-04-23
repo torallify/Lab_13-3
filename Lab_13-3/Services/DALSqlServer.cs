@@ -120,5 +120,93 @@ namespace Lab_13_3.Services
 
             return Movies;
         }
+
+        public OrderDetail GetOrderDetailById(int id)
+        {
+            SqlConnection connection = null;
+            string queryString = "SELECT * FROM [Order Details] WHERE OrderID = @id";
+            OrderDetail orderDetail = null;
+
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                orderDetail = connection.QueryFirstOrDefault<OrderDetail>(queryString, new { id = id });
+            }
+            catch (Exception e)
+            {
+                //log the error--get details from e
+            }
+            finally //cleanup!
+            {
+                if (connection != null)
+                {
+                    connection.Close(); //explicitly closing the connection
+                }
+            }
+
+            return orderDetail;
+        }
+
+        public Product GetProductById(int id)
+        {
+            SqlConnection connection = null;
+            string queryString = "SELECT * FROM Products WHERE ProductID = @id";
+            Product product = null;
+
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                product = connection.QueryFirstOrDefault<Product>(queryString, new { id = id });
+            }
+            catch (Exception e)
+            {
+                //log the error--get details from e
+            }
+            finally //cleanup!
+            {
+                if (connection != null)
+                {
+                    connection.Close(); //explicitly closing the connection
+                }
+            }
+
+            return product;
+        }
+
+        public int CreateProduct(Product p)
+        {
+            SqlConnection connection = null;
+            string queryString = "INSERT INTO Products (ProductName, Category, QuantityPerUnit, UnitPrice, UnitsInStock, Discontinued)";
+            queryString += " VALUES (@ProductName, @Category, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @Discontinued);";
+            queryString += " SELECT SCOPE_IDENTITY();";
+            int newId;
+
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                newId = connection.ExecuteScalar<int>(queryString, p);
+            }
+            catch (Exception e)
+            {
+                newId = -1;
+                //log the error--get details from e
+            }
+            finally //cleanup!
+            {
+                if (connection != null)
+                {
+                    connection.Close(); //explicitly closing the connection
+                }
+            }
+
+            return newId;
+        }
+        public int DeleteProductById(int id)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            string deleteCommand = "DELETE FROM Products WHERE ProductID = @id";
+            int rows = connection.Execute(deleteCommand, new { id = id });
+            return rows;
+        }
     }
 }
