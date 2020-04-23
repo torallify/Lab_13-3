@@ -60,11 +60,11 @@ namespace Lab_13_3.Controllers
             return new { status = true, id = newId };
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public Object Delete(int id)
         {
             int result = dal.DeleteProductById(id);
-            if (result < 0)
+            if (result >= 0)
             {
                 return new { success = true };
             }

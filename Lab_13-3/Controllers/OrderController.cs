@@ -34,5 +34,16 @@ namespace Lab_13_3.Controllers
                 return Orders;
             }
         }
+        [HttpPost]
+        public Object Post(Order o)
+        {
+            int newId = dal.CreateOrder(o);
+            if (newId < 0)
+            {
+                return new { success = false };
+            }
+
+            return new { status = true, id = newId };
+        }
     }
 }

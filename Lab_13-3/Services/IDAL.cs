@@ -17,6 +17,8 @@ namespace Lab_13_3.Services
         public Product GetProductById(int id);
 
         public int CreateProduct(Product p);
+        public int CreateOrder(Order o);
+        public int DeleteOrderDetailById(int id);
 
         public int DeleteProductById(int id);
     }

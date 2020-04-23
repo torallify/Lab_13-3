@@ -176,8 +176,8 @@ namespace Lab_13_3.Services
         public int CreateProduct(Product p)
         {
             SqlConnection connection = null;
-            string queryString = "INSERT INTO Products (ProductName, Category, QuantityPerUnit, UnitPrice, UnitsInStock, Discontinued)";
-            queryString += " VALUES (@ProductName, @Category, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @Discontinued);";
+            string queryString = "INSERT INTO Products (ProductName, QuantityPerUnit, UnitPrice, UnitsInStock, Discontinued)";
+            queryString += " VALUES (@ProductName, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @Discontinued);";
             queryString += " SELECT SCOPE_IDENTITY();";
             int newId;
 
@@ -200,6 +200,43 @@ namespace Lab_13_3.Services
             }
 
             return newId;
+        }
+
+        public int CreateOrder(Order o)
+        {
+            SqlConnection connection = null;
+            string queryString = "INSERT INTO Orders (OrderDate, ShippedDate, ShipCountry)";
+            queryString += " VALUES (@OrderDate, @ShippedDate, @ShipCountry);";
+            queryString += " SELECT SCOPE_IDENTITY();";
+            int newId;
+
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                newId = connection.ExecuteScalar<int>(queryString, o);
+            }
+            catch (Exception e)
+            {
+                newId = -1;
+                //log the error--get details from e
+            }
+            finally //cleanup!
+            {
+                if (connection != null)
+                {
+                    connection.Close(); //explicitly closing the connection
+                }
+            }
+
+            return newId;
+        }
+
+        public int DeleteOrderDetailById(int id)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            string deleteCommand = "DELETE FROM [Order Details] WHERE OrderID = @id";
+            int rows = connection.Execute(deleteCommand, new { id = id });
+            return rows;
         }
         public int DeleteProductById(int id)
         {

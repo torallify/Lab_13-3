@@ -47,6 +47,20 @@ namespace Lab_13_3.Controllers
             //}
         }
 
-        
+        [HttpDelete("Delete/{id}")]
+        public Object Delete(int id)
+        {
+            int result = dal.DeleteOrderDetailById(id);
+            if (result >= 0)
+            {
+                return new { success = true };
+            }
+            else
+            {
+                return new { success = false };
+            }
+        }
+
+
     }
 }
